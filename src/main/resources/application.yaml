@@ -1,0 +1,13 @@
+logging:
+  org.openqa.selenium: INFO
+  org.asynchttpclient.netty: INFO
+
+
+server:
+  compression:
+    enabled: true
+  port: 8082
+
+spring:
+  application:
+    name: Youtube_Srapy
