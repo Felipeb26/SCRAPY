@@ -1,8 +1,6 @@
 package com.batsworks.scrapy.controller;
 
-import com.batsworks.scrapy.model.Youtube;
 import com.batsworks.scrapy.service.YoutubeService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,7 +22,7 @@ public class YoutubeController {
     private YoutubeService service;
 
     @GetMapping
-    public ResponseEntity<List<Youtube>> response(@RequestParam String url, @RequestParam(defaultValue = "10") long limit) {
+    public ResponseEntity<List<Object>> response(@RequestParam String url, @RequestParam(defaultValue = "10") long limit) {
         return ResponseEntity.ok().body(service.findMany(url, limit));
     }
 

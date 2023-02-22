@@ -17,7 +17,7 @@ public class YoutubeImplements implements YoutubeService {
     private SeleniumService service;
 
     @Override
-    public List<Youtube> findMany(String url, long limit) {
+    public List<Object> findMany(String url, long limit) {
         try {
             url = url.replace(" ", "+");
             return service.getDataString(url, limit);

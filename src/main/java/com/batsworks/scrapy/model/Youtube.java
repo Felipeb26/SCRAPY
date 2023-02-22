@@ -13,6 +13,5 @@ public class Youtube {
     private String time;
     private String channel;
     private String description;
-    private String image;
     private String videoLink;
 }

@@ -8,5 +8,5 @@ import java.util.List;
 @Service
 public interface YoutubeService {
 
-    List<Youtube> findMany(String url, long limit);
+    List<Object> findMany(String url, long limit);
 }
