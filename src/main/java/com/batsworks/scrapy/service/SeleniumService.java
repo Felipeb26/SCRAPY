@@ -27,20 +27,11 @@ import static java.util.Objects.nonNull;
 public class SeleniumService {
     private static String dowload = System.getProperty("user.home");
     private static WebDriver driver;
-
     @Autowired
     private Facilities facilities;
 
     private void setWebDriver() {
-        try {
-            var chromedriver = getClass().getResource("/drivers/chromedriver.exe");
-            var localdriver = chromedriver.toExternalForm();
-            localdriver = localdriver.substring(localdriver.lastIndexOf("target"));
-            System.setProperty("webdriver.chrome.driver", localdriver);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(chromeOptions());
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
@@ -51,12 +42,11 @@ public class SeleniumService {
         List<Youtube> video_list = new ArrayList<>();
         List<Object> all_videos = new ArrayList<>();
 
-        setWebDriver();
-
         try {
+            setWebDriver();
             driver.get(String.format("https://www.youtube.com/results?search_query=%s", url));
 
-            while (limit >= all_videos.size()) {
+            while (limit > all_videos.size()) {
                 for (var i = 1; i <= limit; i++) {
                     var content = driver.findElement(By.xpath("//*[@id=\"contents\"]"));
                     getAllVideos(content, i, video_list);
@@ -71,12 +61,9 @@ public class SeleniumService {
                 getAllVideos(content, i, video_list);
             }
         }
-        driver.close();
-        if (nonNull(driver)) {
-            driver.quit();
-        }
+        driver.quit();
         facilities.joinAndRemoveDuplicates(video_list, playlist_list, all_videos);
-        return all_videos.stream().sorted().collect(Collectors.toList());
+        return all_videos;
     }
 
     private void getAllVideos(WebElement content, int i, List<Youtube> video_list) {
@@ -119,7 +106,7 @@ public class SeleniumService {
         options.addArguments("--disable-extensions").addArguments("--disable-infobars").addArguments("--no-sandbox");
 //        options.addArguments("--user-data-dir=C:\\Temp\\");
 //        options.addArguments("--profile-directory=ChromeData");
-//        options.setHeadless(true);
+        options.setHeadless(true);
         HashMap<String, Object> prefs = new HashMap<>();
         prefs.put("profile.default_content_settings.popups", 0);
         prefs.put("safebrowsing.enabled", "false");
